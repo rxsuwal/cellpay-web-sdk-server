@@ -81,7 +81,7 @@ window.addEventListener('message', function (event) {
 
         } else if ((event.data != "reload")) {
 
-            
+            console.log("COMPLETE PAYMENT RESULT", event.data)
 
             // FUNCTION ON CLIENT SIDE TO CATCH COMPLETE TXN DATA
             txnData(event.data)

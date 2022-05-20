@@ -68,7 +68,7 @@ export const cancelTxn = (source) => {
 
     for (let i = 0; i < cancelbtn.length; i++) {
         cancelbtn[i].addEventListener('click', function () {
-            
+            console.log("trasaction Cancelled !")
 
             source.postMessage('reload', "*")
         })
