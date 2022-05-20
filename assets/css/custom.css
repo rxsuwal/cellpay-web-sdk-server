@@ -1,0 +1,50 @@
+.cp-bg-primary{
+    background-color: #193982!important;
+}
+
+button.cp-btn-primary,button.cp-btn-primary:hover{
+    background-color: #193982!important;
+    color: #fff;
+}
+
+a{
+    color: #193982!important;
+    font-weight: 500;
+}
+
+
+.btn-check:active+.btn.btn-outline.btn-outline-dashed.btn-outline-default, .btn-check:checked+.btn.btn-outline.btn-outline-dashed.btn-outline-default, .btn.btn-outline.btn-outline-dashed.btn-outline-default.active, .btn.btn-outline.btn-outline-dashed.btn-outline-default.show, .btn.btn-outline.btn-outline-dashed.btn-outline-default:active:not(.btn-active), .btn.btn-outline.btn-outline-dashed.btn-outline-default:focus:not(.btn-active), .btn.btn-outline.btn-outline-dashed.btn-outline-default:hover:not(.btn-active), .show>.btn.btn-outline.btn-outline-dashed.btn-outline-default{
+    color: #009ef7;
+    border-color: #193982;
+    background-color: #f1faff!important;
+}
+
+.cp-border-primary{
+    border-color: #193982!important;
+}
+
+
+
+/* FLOATING LABELS */
+.form-label {
+    transition: all 0.3s ease-in-out;
+    top: 50%;
+    transform: translateY(-50%);
+
+}
+
+.cp-floating-label .form-control:focus~.form-label,
+.form-control:not(:placeholder-shown)~label {
+    transform: translateY(-150%);
+    padding: 0 10px;
+}
+
+.cp-floating-label .form-control::placeholder{
+    color: transparent;
+}
+/* FLOATING LABELS */
+
+
+#otp_form .fv-plugins-message-container {
+    display: none;
+}

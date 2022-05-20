@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--begin::Head-->
+
+<head>
+    <base href="">
+    <title>Cellpay Web SDK</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="Cellpay wallet web sdk" />
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Cellpay" />
+    <meta property="og:url" content="https://cellpay.com.np" />
+    <meta property="og:site_name" content="CellPay" />
+    <link rel="shortcut icon" href="assets/media/cellpayFavIcon.ico" />
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <!--end::Fonts-->
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+    <!--begin::Global Stylesheets Bundle(used by all pages)-->
+    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Global Stylesheets Bundle-->
+
+    <link rel="stylesheet" href="assets/css/custom.css">
+
+    <style>
+
+    </style>
+</head>
+<!--end::Head-->
+<!--begin::Body-->
+
+<body class="bg-dark bg-opacity-75">
+
+
+    <div class="modal-dialog modal-xl">
+
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div
+                    style="min-height: 100vh;background-image: url('./assets/media/splashBg@3x.png');background-position: center;">
+
+
+
+                    <!-- <span id="cellpay_sdk_mode" class="fw-bolder">MODE : <em>NOT DEFINED</em></span> -->
+
+                    <main style="min-height: 60vh;"
+                        class="bg-white w-md-400px w-300px w-md-450px p-8 p-lg-10 mx-auto text-center shadow rounded my-5 my-lg-10">
+                        <span id="cellpay_sdk_mode" class="badge badge-dark">MODE : <em>NOT DEFINED</em></span>
+
+
+
+                        <figure>
+
+                            <img src="./assets/media/CellPay.svg" class="h-50px" alt="">
+                        </figure>
+
+                        <!-- STEP 1 -->
+                        <div id="step_1">
+                            <div>
+                                <h2>Login</h2>
+                            </div>
+                            <!-- LOGIN FORM -->
+                            <form action="#!" class="text-center py-10" id="login_form">
+                                <div class="fv-row mb-10 text-start">
+                                    <div class="position-relative cp-floating-label">
+                                        <input class="form-control" type="text" maxlength="10"
+                                            oninput="this.value=this.value.replace(/[^0-9]/g,'');" placeholder="Mobile"
+                                            id="mobile_number" autocomplete="off" value="" name="mobile" />
+                                        <label for="mobile_number"
+                                            class="form-label bg-white fw-bolder ms-5 text-dark fs-6 position-absolute position-absolute start-0">Mobile
+                                            Number</label>
+
+                                    </div>
+                                </div>
+
+                                <div class="fv-row mb-10 text-start">
+                                    <div class="position-relative cp-floating-label">
+                                        <input class="form-control" type="password" placeholder="password" id="password"
+                                            name="password" autocomplete="off" value="" maxlength="6" />
+                                        <label for="password"
+                                            class="form-label bg-white fw-bolder ms-5 text-dark fs-6 position-absolute position-absolute start-0">Password</label>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+
+                                <!--begin::Actions-->
+                                <div id="login_form_actions">
+                                    <button id="login_form_submit" type="submit"
+                                        class="btn cp-btn-primary rounded-pill min-w-150px">
+                                        <span class="indicator-label">
+                                            Login
+                                        </span>
+                                        <span class="indicator-progress">
+                                            Please wait... <span
+                                                class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                        </span>
+                                    </button>
+                                    <br><br>
+                                    <button class="btn" type="reset">Cancel</button>
+                                </div>
+                                <!--end::Actions-->
+
+
+                            </form>
+                            <!--END LOGIN FORM -->
+                            <!-- OTP MODAL -->
+                            <div class="modal fade" tabindex="-1" id="kt_modal_1">
+                                <div class="modal-dialog  modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header justify-content-end">
+
+                                            <!--begin::Close-->
+                                            <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                                data-bs-dismiss="modal" aria-label="Close">
+                                                <img src="assets/media/icons/duotune/arrows/arr011.svg" />
+
+                                            </div>
+                                            <!--end::Close-->
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <!--begin::Form-->
+                                            <form action="./txn-details.htm" method="post" class="form w-100 mb-10"
+                                                novalidate="novalidate" id="otp_form">
+
+                                                <!--begin::Heading-->
+                                                <div class="text-center mb-10">
+                                                    <!--begin::Title-->
+                                                    <h1 class="text-dark mb-3">Two Step Verification</h1>
+                                                    <!--end::Title-->
+                                                    <!--begin::Sub-title-->
+                                                    <div class="text-muted fw-bold fs-5 mb-5">Enter the OTP code we sent
+                                                        to
+                                                    </div>
+                                                    <!--end::Sub-title-->
+                                                    <!--begin::Mobile no-->
+                                                    <div class="fw-bolder text-dark fs-3" id="otp_sent_number">
+                                                        ******7859
+                                                    </div>
+                                                    <!--end::Mobile no-->
+                                                </div>
+                                                <!--end::Heading-->
+                                                <!--begin::Section-->
+                                                <div class="mb-10 px-md-10">
+                                                    <!--begin::Label-->
+                                                    <div class="fw-bolder text-start text-dark fs-6 mb-1 ms-1">Type your
+                                                        6
+                                                        digit OTP
+                                                        code</div>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input group-->
+                                                    <div class="d-flex flex-wrap flex-stack fv-row">
+                                                        <input type="text" name="loginotp"
+                                                            data-inputmask="'mask': '9', 'placeholder': ''"
+                                                            maxlength="1"
+                                                            class="form-control h-50px w-50px fs-1qx text-center bg-secondary mx-1 my-2"
+                                                            value="" />
+                                                        <input type="text" name="loginotp"
+                                                            data-inputmask="'mask': '9', 'placeholder': ''"
+                                                            maxlength="1"
+                                                            class="form-control h-50px w-50px fs-1qx text-center bg-secondary mx-1 my-2"
+                                                            value="" />
+                                                        <input type="text" name="loginotp"
+                                                            data-inputmask="'mask': '9', 'placeholder': ''"
+                                                            maxlength="1"
+                                                            class="form-control h-50px w-50px fs-1qx text-center bg-secondary mx-1 my-2"
+                                                            value="" />
+                                                        <input type="text" name="loginotp"
+                                                            data-inputmask="'mask': '9', 'placeholder': ''"
+                                                            maxlength="1"
+                                                            class="form-control h-50px w-50px fs-1qx text-center bg-secondary mx-1 my-2"
+                                                            value="" />
+                                                        <input type="text" name="loginotp"
+                                                            data-inputmask="'mask': '9', 'placeholder': ''"
+                                                            maxlength="1"
+                                                            class="form-control h-50px w-50px fs-1qx text-center bg-secondary mx-1 my-2"
+                                                            value="" />
+                                                        <input type="text" name="loginotp"
+                                                            data-inputmask="'mask': '9', 'placeholder': ''"
+                                                            maxlength="1"
+                                                            class="form-control h-50px w-50px fs-1qx text-center bg-secondary mx-1 my-2"
+                                                            value="" />
+                                                    </div>
+                                                    <!--begin::Input group-->
+                                                </div>
+                                                <!--end::Section-->
+                                                <!--begin::Submit-->
+                                                <div class="d-flex flex-center flex-column">
+                                                    <button type="button" id="otp_form_submit"
+                                                        class="btn cp-btn-primary rounded-pill min-w-150px">
+                                                        <span class="indicator-label">Proceed</span>
+                                                        <span class="indicator-progress">Please wait...
+                                                            <span
+                                                                class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                                    </button> <br>
+                                                    <button type="button" class="btn" id="otp_resend_submit">
+                                                        <span class="indicator-label">Resend OTP</span>
+                                                        <span class="indicator-progress">Please wait...
+                                                            <span
+                                                                class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                                <!--end::Submit-->
+                                            </form>
+                                            <!--end::Form-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- OTP MODAL END -->
+
+                        </div>
+
+                        <!--END STEP 1 -->
+
+                        <!-- STEP 2 -->
+                        <div id="step_2" style="display: none;">
+                            <div>
+                                <h2>Transaction Details</h2>
+                            </div>
+
+                            <div class="pt-10">
+                                <div class="row mb-4 pb-4 border-bottom cp-border-primary">
+                                    <div class="col-6 fw-bolder text-start">Amount</div>
+                                    <div class="col-6 text-start" id="txn_details_amount">: Rs. <span></span></div>
+                                </div>
+
+                            </div>
+
+
+
+                            <!--begin::Form-->
+                            <div class="mt-10">
+                                <form id="kt_docs_formvalidation_select2" class="form" action="./confirm.htm"
+                                    autocomplete="off">
+                                    <div class="col-md-12 fw-bolder text-start">Payment Option</div>
+
+                                    <div class="row mt-4 mb-4" id="payment_option">
+                                        <div class="col-md-6">
+                                            <!--begin::Option-->
+                                            <input type="radio" class="btn-check" name="payment_option" value="wallet"
+                                                checked id="wallet_radio" />
+                                            <label
+                                                class="btn btn-outline btn-outline-dashed btn-outline-default d-flex align-items-center mb-4"
+                                                for="wallet_radio">
+                                                <!--begin::Svg Icon | path: icons/duotune/coding/cod001.svg-->
+                                                <span class="svg-icon svg-icon-4x me-4">
+                                                    <img src="assets/media/icons/duotune/finance/fin008.svg" />
+
+                                                </span>
+                                                <!--end::Svg Icon-->
+
+                                                <span class="d-block fw-bold text-start">
+                                                    <span class="text-dark fw-bolder d-block">Wallet</span>
+
+                                                </span>
+                                            </label>
+                                            <!--end::Option-->
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <!--begin::Option-->
+                                            <input type="radio" class="btn-check" name="payment_option" value="bank"
+                                                id="bank_radio" />
+                                            <label
+                                                class="btn btn-outline btn-outline-dashed btn-outline-default d-flex align-items-center mb-4"
+                                                for="bank_radio">
+                                                <!--begin::Svg Icon | path: icons/duotune/communication/com003.svg-->
+                                                <span class="svg-icon svg-icon-4x me-4">
+                                                    <img src="assets/media/icons/duotune/finance/fin001.svg" />
+
+                                                </span>
+                                                <!--end::Svg Icon-->
+
+                                                <span class="d-block fw-bold text-start">
+                                                    <span class="text-dark fw-bolder d-block">Bank</span>
+
+                                                </span>
+                                            </label>
+                                            <!--end::Option-->
+                                        </div>
+
+
+
+                                    </div>
+
+
+                                    <!--begin::Input group--->
+                                    <div id="bank_list" class="fv-row mb-8 col-md-10 mx-auto">
+
+                                        <select class="form-select" name="bank" value="" data-placeholder="Select Bank"
+                                            id="kt_docs_select2_bank">
+                                            <option></option>
+                                        </select>
+
+
+
+
+                                    </div>
+                                    <!--end::Input group--->
+
+                                    <!--begin::Actions-->
+                                    <div>
+                                        <button id="kt_docs_formvalidation_select2_submit" type="submit"
+                                            class="btn cp-btn-primary rounded-pill min-w-150px">
+                                            <span class="indicator-label">
+                                                Proceed
+                                            </span>
+                                            <span class="indicator-progress">
+                                                Please wait... <span
+                                                    class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                            </span>
+                                        </button> <br> <br>
+                                        <button class="btn" type="reset">Cancel</button>
+                                    </div>
+                                    <!--end::Actions-->
+                                </form>
+                            </div>
+                            <!--end::Form-->
+                        </div>
+                        <!-- END STEP 2 -->
+
+                        <!-- STEP 3 -->
+                        <div id="step_3" style="display: none;">
+                            <div>
+                                <h2>Payment Confirmation</h2>
+                            </div>
+
+                            <div class="pt-10">
+                                <div class="row mb-4 pb-4 border-bottom cp-border-primary">
+                                    <div class="col-4 fw-bolder text-start">Amount</div>
+                                    <div class="col-8 text-start" id="payment_confirm_amount">:<span></span></div>
+                                </div>
+                                <div class="row mb-4 pb-4 border-bottom cp-border-primary">
+                                    <div class="col-4 fw-bolder text-start ">To</div>
+                                    <div class="col-8 text-start" id="payment_confirm_name">: <span></Span></div>
+                                </div>
+
+                                <div class="col-md-12 fw-bolder text-start mb-4 mt-8">Payer Details : </div>
+
+                                <div class="row mb-4 pb-4 border-bottom cp-border-primary">
+                                    <div class="col-4 fw-bolder text-start">Payment Option</div>
+                                    <div class="col-8 text-start" id="payment_confirm_payment_option">: <span></span>
+                                    </div>
+                                </div>
+                                <div id="payment_confirm_account_details">
+
+                                </div>
+                            </div>
+
+
+
+                            <!--begin::Form-->
+                            <div class="mt-10">
+                                <form id="confirm_pay_form" class="form" action="./txn-complete.htm" autocomplete="off">
+
+                                    <div class="col-md-12 fw-bolder text-start mb-8">Payment Confirm </div>
+
+
+                                    <div class="fv-row mb-8 text-start">
+                                        <div class="position-relative cp-floating-label">
+                                            <input class="form-control" type="text" maxlength="6"
+                                                oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                                id="confirm_pay_txn_pin" placeholder="Enter Txn PIN" autocomplete="off"
+                                                value="" name="txnPIN" />
+                                            <label for="confirm_pay_txn_pin"
+                                                class="form-label bg-white fw-bolder ms-5 text-dark fs-6 position-absolute position-absolute start-0">
+                                                Transaction PIN</label>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="fv-row mb-8 text-start" id="confirm_pay_otp_input">
+                                        <div class="position-relative cp-floating-label">
+                                            <input class="form-control" type="text" maxlength="6" id="confirm_pay_otp"
+                                                oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                                placeholder="Enter OTP" autocomplete="off" value="" name="otp" />
+                                            <label for="mobile_number"
+                                                class="form-label bg-white fw-bolder ms-5 text-dark fs-6 position-absolute position-absolute start-0">
+                                                OTP</label>
+
+                                        </div>
+                                    </div>
+
+                                    <!--begin::Actions-->
+                                    <button id="confirm_pay_form_submit" type="submit"
+                                        class="btn cp-btn-primary rounded-pill min-w-150px">
+                                        <span class="indicator-label">
+                                            Confirm Pay
+                                        </span>
+                                        <span class="indicator-progress">
+                                            Please wait... <span
+                                                class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                        </span>
+                                    </button> <br><br>
+                                    <button class="btn" type="reset">Cancel</button>
+                                    <!--end::Actions-->
+                                </form>
+                            </div>
+                            <!--end::Form-->
+                        </div>
+
+                        <div id="step_4" style="display: none;">
+
+                            <div>
+                                <h2>Transaction Complete</h2>
+                                <i class="las la-check-circle fs-5x text-success"></i>
+                            </div>
+
+                            <div class="pt-10" id="txn_complete_details">
+
+                            </div>
+
+
+
+                            <!--begin::Form-->
+                            <form id="complete_form" class="form mt-4" action="./txn-complete.htm" autocomplete="off">
+                                <!--begin::Actions-->
+                                <button id="complete_form_submit" type="button"
+                                    class="btn cp-btn-primary rounded-pill min-w-150px">
+                                    <span class="indicator-label">
+                                        Complete
+                                    </span>
+                                    <span class="indicator-progress">
+                                        Please wait... <span
+                                            class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                    </span>
+                                </button>
+                                <!--end::Actions-->
+                            </form>
+                            <!--end::Form-->
+                        </div>
+
+
+                    </main>
+
+
+
+                    <footer style="min-height: 40vh;" class="fs-5 cp-bg-primary text-white">
+                        <div class="container ">
+                            <div class="row py-10">
+                                <div class="col-md-6 col-lg-3  text-center text-md-start">
+
+                                    <h3 class="text-white">Contact</h3>
+
+                                    <div>
+                                        <small class="">Tribhuvan International Airport (TIA),</small><br>
+                                        <small class="">IMS Airport Plaza, (3rd Floor),</small><br>
+                                        <small class="">Sinamangal-9, Kathmandu, Nepal</small><br>
+                                        <small
+                                            class="d-flex align-items-center justify-content-center justify-content-md-start">
+                                            <span class=""><i class="las la-at fs-1 text-white"></i></span>
+                                            <a href="info@cellcom.net.np " class="text-white">
+                                                info@cellcom.net.np </a> </small>
+
+                                        <small
+                                            class="d-flex align-items-center justify-content-center justify-content-md-start">
+                                            <span>
+                                                <i class="las la-globe fs-1 text-white"></i>
+                                            </span> <a href="https://cellpay.com.np" target="_blank" class="text-white">
+                                                www.cellpay.com.np </a>
+                                        </small> <br>
+
+
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6   col-lg-3 mb-10 mb-md-0 text-center text-md-start">
+                                    <h3 class="text-white">Call</h3>
+
+                                    <div>
+                                        <small class="" style="margin-top:10px;">
+                                            <a class="text-white" href="tel:+977-1-5908241">+977-1-
+                                                5908241</a>
+                                        </small><br>
+
+                                        <small class="" style="margin-top:10px;">
+                                            <a class="text-white" href="tel:+977-1-5908241">+977-1-
+                                                5908241</a>
+                                        </small><br>
+                                        <small class="" style="margin-top:10px;">
+                                            <a class="text-white" href="tel:1660-01-42555">1660-01-42555</a>
+                                        </small>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 col-lg-3 mb-10 mb-md-0  text-center text-md-start">
+                                    <h3 class="text-white">Downloads</h3>
+
+                                    <div>
+                                        <a href="https://play.google.com/store/apps/details?id=com.cellpay"
+                                            target="_blank">
+                                            <img src="./assets/media/apps/google-play.png" class="h-50px w-50px" alt="">
+                                        </a>
+                                        <a href="https://itunes.apple.com/us/app/cellpay/id1441280711?mt=8"
+                                            target="_blank">
+                                            <img src="./assets/media/apps/apple-app-store.png" class="h-50px w-50px"
+                                                alt="">
+                                        </a>
+
+                                    </div>
+
+
+                                    <h3 class="text-white mt-8">Socials</h3>
+
+                                    <div>
+                                        <a href="https://www.facebook.com/CellPayNepal/" referrer="norefferrer"
+                                            target="_blank">
+                                            <img src="./assets/media/social/fb.png" class="h-40px w-40px" alt="">
+                                        </a>
+                                        <a href="https://www.instagram.com/cellpay.nepal/" target="_blank"> <img
+                                                src="./assets/media/social/ig.png" class="h-50px w-50px" alt="">
+                                        </a>
+                                        <a href="https://www.linkedin.com/company/cellpay-nepal/" target="_blank"> <img
+                                                src="./assets/media/social/ln.png" class="h-50px w-50px" alt="">
+                                        </a>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-lg-3  text-center text-md-start">
+                                    <h3 class="text-white">Information</h3>
+
+                                    <div>
+
+                                        <a class="text-white" href="#"> <small class=" ">Privacy
+                                                Policy </small></a> <br>
+                                        <a class="text-white" href="#"> <small class=" ">Terms
+                                                and
+                                                Condit
+
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div class="container-fluid text-white  cp-bg-primary">
+                            <div class="d-flex justify-content-between align-items-center border-top py-2">
+                                <div class="">
+                                    <em class="">&copy;
+                                        CellPay, All rights reserved.</em>
+                                </div>
+                                <div class="">
+                                    <img class="h-50px" src="./assets/media/cellpay-white.png" alt="Cellpay">
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </footer>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+    <!--begin::Javascript-->
+    <!--begin::Global Javascript Bundle(used by all pages)-->
+    <script src="assets/plugins/global/plugins.bundle.js"></script>
+    <script src="assets/js/scripts.bundle.js"></script>
+    <!--end::Global Javascript Bundle-->
+
+    <script type="module" src="assets/js/custom.js"></script>
+
+    <!--end::Javascript-->
+
+
+
+</body>
+<!--end::Body-->
+
+</html>
