@@ -3,7 +3,7 @@ import { BASE_URL } from "./api_utils.js";
 
 export const bankList = async (sessionToken) => {
 
-    console.log(sessionToken)
+    
     const header = {
         "Content-Type": "application/json",
 
@@ -14,11 +14,11 @@ export const bankList = async (sessionToken) => {
         axios.get('https://' + BASE_URL.url + '.cellpay.com.np/rest/memberRecord/accounts', {
             headers: header
         }).then(rspnse => {
-            console.log(rspnse)
+            
             resolve(rspnse)
         })
             .catch(err => {
-                console.log(err)
+                
                 reject(err)
             })
     })
