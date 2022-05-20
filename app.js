@@ -12,7 +12,7 @@ window.addEventListener('load', function () {
                 style="display:none;position:fixed;height:100%;width:100%;top:0;bottom:0;object-fit:contain;background:#fff;" 
                 src="https://cellpay-api.s3.ap-south-1.amazonaws.com/public/giphy.gif"/>
 
-            <iframe src="https://rxsuwal.github.io/cellpay-web-sdk-server/index.htm" 
+            <iframe src="http://192.168.10.102/cellpay-web-sdk-server/index.htm" 
                     id="iframe" 
                     style="display:none;position:fixed;height:100%;width:100%;top:0;bottom:0;"/>`
 
@@ -69,7 +69,7 @@ window.addEventListener('load', function () {
 
 window.addEventListener('message', function (event) {
 
-    if (event.origin == 'https://rxsuwal.github.io') {
+    if (event.origin == 'http://192.168.10.102') {
         document.getElementById('loading').style.display = "block"
         document.getElementById('iframe').style.display = "none"
 
