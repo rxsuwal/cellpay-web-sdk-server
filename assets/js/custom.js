@@ -10,7 +10,10 @@ let receiverDetails = {
     "transferTypeId": "",
     "id": "",
     "mode": "",
-    "url": ""
+    "url": "",
+    "invoiceNumber":"",
+    "traceNumber":""
+
 }
 
 let senderDetails = {
@@ -28,7 +31,7 @@ let confirmPayOtpRequired = false
 
 
 window.addEventListener('message', function (event) {
-    console.log("BEFORE CLIENT DATA", receiverDetails)
+    
 
     // SET CONFIG DATA TO RECEVER DETAILS
     receiverDetails.amount = event.data.amount
@@ -36,8 +39,10 @@ window.addEventListener('message', function (event) {
     receiverDetails.id = event.data.user
     receiverDetails.mode = event.data.mode
     receiverDetails.url = event.data.client_url
+    receiverDetails.invoiceNumber = event.data.invoiceNumber,
+    receiverDetails.traceNumber = event.data.traceNumber
     // END SET CONFIG DATA TO RECEVER DETAILS
-    console.log("AFTER CLIENT DATA", receiverDetails)
+    
 
 
     // CHECK IF ANY VALUE SENT BY CLIENT IS EMPTY
@@ -98,7 +103,7 @@ window.addEventListener('message', function (event) {
         // Validate form before submit
         if (validatorLoginForm) {
             validatorLoginForm.validate().then(function (status) {
-                console.log('validated!');
+                
                 username = $("#login_form input[name=mobile]").val()
                 password = $("#login_form input[name=password]").val()
 
@@ -114,11 +119,11 @@ window.addEventListener('message', function (event) {
                     const userLogin = async (data) => {
                         //    await login(data)
                         //         .then(rspnse => {
-                        //             console.log("LOGIN RESPNSE", rspnse)
+                                    
                         //             LOGIN_RESPONSE = rspnse
                         //         })
                         //         .catch(err => {
-                        //             console.log("LOGIN ERROR", err.response)
+                                    
                         //             LOGIN_RESPONSE = err.response
                         //         })
                         //         .then(() => {
@@ -128,7 +133,7 @@ window.addEventListener('message', function (event) {
                         //             // Enable button
                         //             loginFormSubmit.disabled = false
 
-                        //             console.log(LOGIN_RESPONSE)
+                                    
 
                         //             if (LOGIN_RESPONSE) {
                         //                 if (LOGIN_RESPONSE.status === 200) {
@@ -158,11 +163,11 @@ window.addEventListener('message', function (event) {
 
                         await loginWithOutOtp(data)
                             .then(rspnse => {
-                                console.log("LOGIN RESPNSE", rspnse)
+                                
                                 LOGIN_RESPONSE = rspnse
                             })
                             .catch(err => {
-                                console.log("LOGIN ERROR", err.response)
+                                
                                 LOGIN_RESPONSE = err.response
                             })
                             .then(() => {
@@ -172,7 +177,7 @@ window.addEventListener('message', function (event) {
                                 // Enable button
                                 loginFormSubmit.disabled = false
 
-                                console.log(LOGIN_RESPONSE)
+                                
 
                                 if (LOGIN_RESPONSE) {
                                     if (LOGIN_RESPONSE.status === 200) {
@@ -266,7 +271,7 @@ window.addEventListener('message', function (event) {
         // Validate form before submit
         if (validatorOtpForm) {
             validatorOtpForm.validate().then(function (status) {
-                console.log('validated!');
+                
 
                 if (status == 'Valid') {
                     // Show loading indication
@@ -280,18 +285,18 @@ window.addEventListener('message', function (event) {
                         loginOTP += otpInputs[i].value
                     }
 
-                    console.log("OTP ENTERED", loginOTP)
+                    
 
                     let LOGIN_WITH_OTP
 
                     const userLoginWithOTP = async (data, otp) => {
                         await loginWithOtp(data, otp)
                             .then(rspnse => {
-                                console.log("LOGIN WITH OTP RESPNSE", rspnse)
+                                
                                 LOGIN_WITH_OTP = rspnse
                             })
                             .catch(err => {
-                                console.log("LOGIN WITH OTP ERROR", err.response)
+                                
                                 LOGIN_WITH_OTP = err.response
                             }).then(() => {
                                 // Remove loading indication
@@ -348,13 +353,13 @@ window.addEventListener('message', function (event) {
         const getOtpResend = async (data) => {
             await login(data)
                 .then(rspnse => {
-                    console.log("OTP RESEND STATUS RESPONSE", rspnse)
+                    
                     OTP_RESEND_STATUS = rspnse
 
 
                 })
                 .catch(err => {
-                    console.log("OTP RESEND STATUS ERR", err.response)
+                    
 
                     OTP_RESEND_STATUS = err.response
                 }).then(() => {
@@ -401,24 +406,24 @@ window.addEventListener('message', function (event) {
     let bankListArray = null
 
     const getBankList = (sessionId) => {
-        console.log(sessionId)
+        
 
         bankList(sessionId).then(rspnse => {
-            console.log("GET BANK LIST REPSONSE", rspnse)
+            
 
             bankListArray = rspnse.data.payload.MemberDetailsList
 
             loadBankList(bankListArray)
 
         }).catch(err => {
-            console.log("GET BANK LIST ERROR", err.response)
+            
             bankListArray = err.response.data?.errors[0]?.shortMessage
         })
     }
 
 
     const loadBankList = (banks) => {
-        console.log("LOADED BANK LIST", banks)
+        
 
         banks.forEach(function (bank) {
 
@@ -522,20 +527,20 @@ window.addEventListener('message', function (event) {
         let walletRadio = document.getElementById('wallet_radio')
 
         if (bankRadio.checked) {
-            console.log('bank pay')
+            
             // Validate form before submit
 
 
 
             if (validator) {
                 validator.validate().then(function (status) {
-                    console.log('validated!');
+                    
                     let bankCode = $('#kt_docs_select2_bank option:selected').val()
-                    console.log(bankCode)
+                    
                     let accountNumber = $('#kt_docs_select2_bank option:selected').attr("data-account-number")
-                    console.log(accountNumber)
+                    
                     let bankName = $('#kt_docs_select2_bank option:selected').attr("data-account-name")
-                    console.log(bankName)
+                    
 
 
                     senderDetails.paymentMethod = "Bank"
@@ -559,14 +564,14 @@ window.addEventListener('message', function (event) {
                         let PAYMENT_SYSTEM_RESULT = null
 
                         const getPaymentSystem = async (sessionId, trasferTypeId, receiver, sender) => {
-                            console.log("PAYMENT SYSTEM INITIATED")
+                            
                             await paymentSystem(sessionId, trasferTypeId, receiver, sender).then(rspnse => {
-                                console.log("PAYMENT_SYSTEM_RESULT", rspnse)
+                                
                                 PAYMENT_SYSTEM_RESULT = rspnse
 
-                                console.log(PAYMENT_SYSTEM_RESULT)
+                                
                             }).catch(err => {
-                                console.log("PAYMENT_SYSTEM_RESULT_ERROR", err)
+                                
                                 PAYMENT_SYSTEM_RESULT = err
                             }).then(() => {
                                 // Remove loading indication
@@ -575,7 +580,7 @@ window.addEventListener('message', function (event) {
 
                                 // Enable button
                                 submitButton.disabled = false;
-                                console.log(PAYMENT_SYSTEM_RESULT)
+                                
 
                                 if (PAYMENT_SYSTEM_RESULT) {
                                     if (PAYMENT_SYSTEM_RESULT.status == "200") {
@@ -617,7 +622,6 @@ window.addEventListener('message', function (event) {
                                         Swal.fire({
                                             text: "Something Went Wrong !",
                                             icon: "error",
-                                            buttonsStyling: false,
                                             confirmButtonText: "Ok, got it!",
                                         })
                                     }
@@ -637,7 +641,7 @@ window.addEventListener('message', function (event) {
             }
 
         } else if (walletRadio) {
-            console.log('wallet pay')
+            
             // Show loading indication
             submitButton.setAttribute('data-kt-indicator', 'on');
             bankRadio.disabled = true
@@ -649,15 +653,15 @@ window.addEventListener('message', function (event) {
             let WALLET_PAYMENT_SYSTEM_RESULT = null
 
             const getPaymentSystem = async (sessionId, trasferTypeId, receiver, sender) => {
-                console.log("PAYMENT SYSTEM INITIATED")
+                
                 await paymentSystem(sessionId, trasferTypeId, receiver, sender)
                     .then(rspnse => {
-                        console.log("WALLET_PAYMENT_SYSTEM_RESULT", rspnse)
+                        
                         WALLET_PAYMENT_SYSTEM_RESULT = rspnse
 
-                        console.log(WALLET_PAYMENT_SYSTEM_RESULT)
+                        
                     }).catch(err => {
-                        console.log("WALLET_PAYMENT_SYSTEM_RESULT_ERROR", err)
+                        
                         WALLET_PAYMENT_SYSTEM_RESULT = err
                     }).then(() => {
                         if (WALLET_PAYMENT_SYSTEM_RESULT) {
@@ -722,10 +726,10 @@ window.addEventListener('message', function (event) {
             const getWalletBalance = async (sessionId, walletId) => {
                 await walletBalance(sessionId, walletId)
                     .then(rspnse => {
-                        console.log("WALLET BALANCE RESPONSE", rspnse)
+                        
                         walletBalanceAmount = rspnse
                     }).catch(err => {
-                        console.log("WALLET BALANCE ERROR", err.response)
+                        
                         walletBalanceAmount = rspnse
                     }).then(() => {
                         getWalletBallenceAmount()
@@ -734,19 +738,16 @@ window.addEventListener('message', function (event) {
 
             const getAccountList = async (sessionId) => {
                 await accountList(sessionId).then(rspnse => {
-                    console.log("GET ACCOUNT LIST RESPONSE", rspnse)
+                    
                     getWalletBalance(sessionId, rspnse.data?.payload?.MemberAccountVOList[1]?.id)
 
                 }).catch(err => {
-                    console.log("GET ACCOUNT LIST ERROR", err?.response)
+                    
                     walletBalance = err.response
                 })
             }
 
             getAccountList(senderDetails.sessionId);
-
-
-
             const getWalletBallenceAmount = () => {
 
 
@@ -756,7 +757,6 @@ window.addEventListener('message', function (event) {
                         Swal.fire({
                             text: "Issufficient Balance !",
                             icon: "error",
-                            buttonsStyling: false,
                             confirmButtonText: "Ok, got it!",
                         })
 
@@ -778,7 +778,6 @@ window.addEventListener('message', function (event) {
                     Swal.fire({
                         text: "Something Went Wrong !",
                         icon: "error",
-                        buttonsStyling: false,
                         confirmButtonText: "Ok, got it!",
                     })
                 }
@@ -857,7 +856,7 @@ window.addEventListener('message', function (event) {
             validatorConfirmPayForm.validate().then(function (status) {
 
 
-                console.log(status)
+                
 
                 if (status == 'Valid') {
 
@@ -878,16 +877,16 @@ window.addEventListener('message', function (event) {
                     }
 
 
-                    console.log("CONFIRM PAY TXN PIN", confirmPayTxnPin)
+                    
 
                     const getConfirmPaymentSystem = async (sessionId, trasferTypeId, receiver, sender, txnPin, otp) => {
-                        console.log("PAYMENT SYSTEM INITIATED")
+                        
                         await confirmPaymentSystem(sessionId, trasferTypeId, receiver, sender, txnPin, otp).then(rspnse => {
-                            console.log("CONFIRM_PAYMENT_SYSTEM_RESULT", rspnse)
+                            
                             CONFIRM_PAYMENT_SYSTEM_RESULT = rspnse
 
                         }).catch(err => {
-                            console.log("CONFIRM_PAYMENT_SYSTEM_RESULT_ERROR", err)
+                            
                             CONFIRM_PAYMENT_SYSTEM_RESULT = err
                         }).then(() => {
                             confirmPaymentSystemResult()

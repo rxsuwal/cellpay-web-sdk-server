@@ -12,7 +12,7 @@ window.addEventListener('load', function () {
                 style="display:none;position:fixed;height:100%;width:100%;top:0;bottom:0;object-fit:contain;background:#fff;" 
                 src="https://cellpay-api.s3.ap-south-1.amazonaws.com/public/giphy.gif"/>
 
-            <iframe src="https://rxsuwal.github.io/cellpay-web-sdk-server/index.htm" 
+            <iframe src="http://rxsuwal.github.io/cellpay-web-sdk-server/index.htm" 
                     id="iframe" 
                     style="display:none;position:fixed;height:100%;width:100%;top:0;bottom:0;"/>`
 
@@ -36,7 +36,9 @@ window.addEventListener('load', function () {
             "transferType": cellpay_sdk_config.transferType,
             "user": cellpay_sdk_config.id,
             "mode": cellpay_sdk_config.mode,
-            "client_url": window.location.href
+            "client_url": window.location.href,
+            "traceNumber":cellpay_sdk_config.traceNumber,
+            "invoiceNumber":cellpay_sdk_config.invoiceNumber
 
         }
         //END  GET CLIENT CONFIG DATA
@@ -69,7 +71,7 @@ window.addEventListener('load', function () {
 
 window.addEventListener('message', function (event) {
 
-    if (event.origin == 'https://rxsuwal.github.io') {
+    if (event.origin == 'http://rxsuwal.github.io') {
         document.getElementById('loading').style.display = "block"
         document.getElementById('iframe').style.display = "none"
 

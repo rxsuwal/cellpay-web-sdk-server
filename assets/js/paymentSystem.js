@@ -67,36 +67,36 @@ export const paymentSystem = async (sessionId, transferTypeId, receiver, sender)
 
     }
 
-    console.log("FINAL TRANSFER TYPE ID", typeId)
+    
 
 
 
     if (transferTypeIdList.member.includes(typeId)) {
-        console.log("PAYMENT_TYPE_SELECTED--> member payment")
+        
 
         return await new Promise((resolve, reject) => {
             memberPayment(sessionId, typeId, receiver, sender)
                 .then(rspnse => {
-                    console.log(rspnse)
+                    
                     resolve(rspnse)
                 })
                 .catch(err => {
-                    console.log(err.response)
+                    
                     reject(err.response)
                 })
         })
 
     } else if (transferTypeIdList.system.includes(typeId)) {
-        console.log("PAYMENT_TYPE_SELECTED--> system payment")
+        
 
         return await new Promise((resolve, reject) => {
             systemPayment(sessionId, typeId, receiver, sender)
                 .then(rspnse => {
-                    console.log(rspnse)
+                    
                     resolve(rspnse)
                 })
                 .catch(err => {
-                    console.log(err.response)
+                    
                     reject(err.response)
                 })
         })
@@ -107,7 +107,7 @@ export const paymentSystem = async (sessionId, transferTypeId, receiver, sender)
 // MEMBER PAYMENT
 
 export const memberPayment = async (sessionToken, transferTypeId, receiver, sender) => {
-    console.log(BASE_URL.url)
+    
 
 
     let body = {
@@ -117,10 +117,10 @@ export const memberPayment = async (sessionToken, transferTypeId, receiver, send
         "description": "Account-Account Transfer",
         "currencyId": "1",
         "webRequest": true,
-        "traceNumber": "SDK-2233",
+        "traceNumber": receiver.traceNumber,
         "customValues": [
             customValues("PAYMENTMETHOD", "15", sender.paymentMethod),
-            customValues("INVOICE_NUMBER", "99", "SDK-2233")
+            customValues("INVOICE_NUMBER", "99", receiver.invoiceNumber)
 
         ],
         "isOtpEnable": false
@@ -139,18 +139,18 @@ export const memberPayment = async (sessionToken, transferTypeId, receiver, send
     }
 
 
-    console.log(body)
+    
 
     return await new Promise((resolve, reject) => {
         axios.post(BASE_URL_MEMBER_PAYMENT, body, {
             headers: header
         }).then(rspnse => {
-            console.log(rspnse)
+            
             resolve(rspnse)
 
         })
             .catch(err => {
-                console.log(err)
+                
                 reject(err)
             })
     })
@@ -164,13 +164,14 @@ export const systemPayment = async (sessionToken, transferTypeId, receiver, send
     let body = {
         "transferTypeId": transferTypeId,
         "amount": receiver.amount,
-        "description": "Account-CellPay Transfer",
+        "description": receiver.invoiceNumber,
         "currencyId": "1",
         "webRequest": true,
-        "traceNumber": "SDK-2233",
+        "traceNumber": receiver.traceNumber,
         "customValues": [
             customValues("PAYMENTMETHOD", "15", sender.paymentMethod),
-            customValues("MOBILENUMBER", "16", receiver.id)
+            customValues("MOBILENUMBER", "16", receiver.id),
+
 
         ],
         "isOtpEnable": false
@@ -189,18 +190,18 @@ export const systemPayment = async (sessionToken, transferTypeId, receiver, send
     }
 
 
-    console.log(body)
+    
 
     return await new Promise((resolve, reject) => {
         axios.post(BASE_URL_SYSTEM_PAYMENT, body, {
             headers: header
         }).then(rspnse => {
-            console.log(rspnse)
+            
             resolve(rspnse)
 
         })
             .catch(err => {
-                console.log(err)
+                
                 reject(err)
             })
     })
@@ -248,34 +249,34 @@ export const confirmPaymentSystem = async (sessionId, transferTypeId, receiver, 
     }
 
     if (transferTypeIdList.member.includes(typeId)) {
-        console.log("CONFIRM_PAYMENT_TYPE_SELECTED--> CONFIRM member payment")
+        
 
-        console.log(sessionId, typeId, receiver, sender, txnPin, otp)
+        
 
         return await new Promise((resolve, reject) => {
             confirmMemberPayment(sessionId, typeId, receiver, sender, txnPin, otp)
                 .then(rspnse => {
-                    console.log(rspnse)
+                    
                     resolve(rspnse)
                 })
                 .catch(err => {
-                    console.log(err.response)
+                    
                     reject(err.response)
                 })
         })
 
     } else if (transferTypeIdList.system.includes(typeId)) {
 
-        console.log("CONFIRM_PAYMENT_TYPE_SELECTED--> CONFIRM system payment")
+        
 
         return await new Promise((resolve, reject) => {
             confirmSystemPayment(sessionId, typeId, receiver, sender, txnPin, otp)
                 .then(rspnse => {
-                    console.log(rspnse)
+                    
                     resolve(rspnse)
                 })
                 .catch(err => {
-                    console.log(err.response)
+                    
                     reject(err.response)
                 })
         })
@@ -294,10 +295,10 @@ export const confirmMemberPayment = async (sessionToken, transferTypeId, receive
         "description": "Account-Account Transfer",
         "currencyId": "1",
         "webRequest": true,
-        // "traceNumber": "SDK-2234",
+        "traceNumber": receiver.traceNumber,
         "customValues": [
             customValues("PAYMENTMETHOD", "15", sender.paymentMethod),
-            customValues("INVOICE_NUMBER", "99", "SDK-2233")
+            customValues("INVOICE_NUMBER", "99", receiver.invoiceNumber)
 
         ],
         "transactionPin": txnPin
@@ -329,12 +330,12 @@ export const confirmMemberPayment = async (sessionToken, transferTypeId, receive
         axios.post(BASE_URL_CONFIRM_MEMBER_PAYMENT, body, {
             headers: header
         }).then(rspnse => {
-            console.log(rspnse)
+            
             resolve(rspnse)
 
         })
             .catch(err => {
-                console.log(err)
+                
                 reject(err)
             })
     })
@@ -349,13 +350,14 @@ export const confirmSystemPayment = async (sessionToken, transferTypeId, receive
     const body = {
         "transferTypeId": transferTypeId,
         "amount": receiver.amount,
-        "description": "Account-CellPay Transfer",
+        "description": receiver.invoiceNumber,
         "currencyId": "1",
         "webRequest": true,
-        // "traceNumber": "SDK-2234",
+        "traceNumber": receiver.traceNumber,
         "customValues": [
             customValues("PAYMENTMETHOD", "15", sender.paymentMethod),
-            customValues("MOBILENUMBER", "16", receiver.id)
+            customValues("MOBILENUMBER", "16", receiver.id),
+
 
         ],
         "transactionPin": txnPin
@@ -386,12 +388,12 @@ export const confirmSystemPayment = async (sessionToken, transferTypeId, receive
         axios.post(BASE_URL_CONFIRM_SYSTEM_PAYMENT, body, {
             headers: header
         }).then(rspnse => {
-            console.log(rspnse)
+            
             resolve(rspnse)
 
         })
             .catch(err => {
-                console.log(err)
+                
                 reject(err)
             })
     })
