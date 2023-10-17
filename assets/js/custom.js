@@ -31,6 +31,8 @@ let confirmPayOtpRequired = false
 
 
 window.addEventListener('message', function (event) {
+
+    console.log(localStorage)
     
 
     // SET CONFIG DATA TO RECEVER DETAILS
