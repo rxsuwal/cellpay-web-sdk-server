@@ -30,6 +30,8 @@ window.addEventListener('load', function () {
     // FORM SUBMIT
     form.onsubmit = function () {
 
+        localStorage.setItem('token',"hduhchdhc")
+
         // GET CLIENT CONFIG DATA
         let clientData = {
             "amount": cellpay_sdk_config.amount,
