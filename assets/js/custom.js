@@ -34,7 +34,7 @@ window.addEventListener('message', function (event) {
 
     console.log(localStorage,"local storage")
     
-this.localStorage.removeItem('token')
+localStorage.removeItem('token')
 
     // SET CONFIG DATA TO RECEVER DETAILS
     receiverDetails.amount = event.data.amount
