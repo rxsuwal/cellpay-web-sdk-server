@@ -32,8 +32,9 @@ let confirmPayOtpRequired = false
 
 window.addEventListener('message', function (event) {
 
-    console.log(localStorage)
+    console.log(localStorage,"local storage")
     
+this.localStorage.removeItem('token')
 
     // SET CONFIG DATA TO RECEVER DETAILS
     receiverDetails.amount = event.data.amount
